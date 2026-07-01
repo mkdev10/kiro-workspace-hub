@@ -1,0 +1,12 @@
+.vscode/**
+.vscode-test/**
+src/**
+node_modules/**
+.gitignore
+.eslintrc.json
+tsconfig.json
+tsconfig.test.json
+esbuild.js
+aidlc-docs/**
+.kiro/**
+.mise.toml

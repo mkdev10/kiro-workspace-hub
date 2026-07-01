@@ -1,0 +1,190 @@
+{
+  "name": "kiro-workspace-hub",
+  "displayName": "Kiro Workspace Hub",
+  "description": "複数のKiroプロジェクトをサイドバーから横断的に切り替えられる拡張機能",
+  "version": "0.1.0",
+  "publisher": "kiro-workspace-hub",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "icon": "resources/icon.png",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "kiro-workspace-hub",
+          "title": "Workspace Hub",
+          "icon": "resources/hub-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "kiro-workspace-hub": [
+        {
+          "id": "kiro-workspace-hub.projectsView",
+          "name": "Projects"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "kiro-workspace-hub.addProject",
+        "title": "プロジェクトを追加",
+        "icon": "$(add)",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.removeProject",
+        "title": "登録解除",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.openInNewWindow",
+        "title": "新しいウィンドウで開く",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.openInCurrentWindow",
+        "title": "現在のウィンドウで開く",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.editTags",
+        "title": "タグを編集",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.editDescription",
+        "title": "説明を編集",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.renameProject",
+        "title": "名前を変更",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.updatePath",
+        "title": "パスを更新",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.scanProjects",
+        "title": "プロジェクトをスキャン",
+        "icon": "$(search)",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.refresh",
+        "title": "表示を更新",
+        "icon": "$(refresh)",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.toggleViewMode",
+        "title": "表示モード切替",
+        "icon": "$(list-tree)",
+        "category": "Workspace Hub"
+      },
+      {
+        "command": "kiro-workspace-hub.configureScanPaths",
+        "title": "スキャンパスを設定",
+        "category": "Workspace Hub"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "kiro-workspace-hub.addProject",
+          "when": "view == kiro-workspace-hub.projectsView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "kiro-workspace-hub.scanProjects",
+          "when": "view == kiro-workspace-hub.projectsView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "kiro-workspace-hub.toggleViewMode",
+          "when": "view == kiro-workspace-hub.projectsView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "kiro-workspace-hub.refresh",
+          "when": "view == kiro-workspace-hub.projectsView",
+          "group": "navigation@4"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "kiro-workspace-hub.openInNewWindow",
+          "when": "view == kiro-workspace-hub.projectsView && viewItem == project",
+          "group": "open@1"
+        },
+        {
+          "command": "kiro-workspace-hub.openInCurrentWindow",
+          "when": "view == kiro-workspace-hub.projectsView && viewItem == project",
+          "group": "open@2"
+        },
+        {
+          "command": "kiro-workspace-hub.editTags",
+          "when": "view == kiro-workspace-hub.projectsView && viewItem =~ /project|currentProject/",
+          "group": "edit@1"
+        },
+        {
+          "command": "kiro-workspace-hub.editDescription",
+          "when": "view == kiro-workspace-hub.projectsView && viewItem =~ /project|currentProject/",
+          "group": "edit@2"
+        },
+        {
+          "command": "kiro-workspace-hub.renameProject",
+          "when": "view == kiro-workspace-hub.projectsView && viewItem =~ /project|currentProject/",
+          "group": "edit@3"
+        },
+        {
+          "command": "kiro-workspace-hub.removeProject",
+          "when": "view == kiro-workspace-hub.projectsView && viewItem =~ /project|currentProject/",
+          "group": "danger@1"
+        },
+        {
+          "command": "kiro-workspace-hub.updatePath",
+          "when": "view == kiro-workspace-hub.projectsView && viewItem == missingProject",
+          "group": "fix@1"
+        },
+        {
+          "command": "kiro-workspace-hub.removeProject",
+          "when": "view == kiro-workspace-hub.projectsView && viewItem == missingProject",
+          "group": "danger@1"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "package": "node esbuild.js --production",
+    "lint": "eslint src",
+    "test": "node ./dist/test/runTest.js",
+    "compile-tests": "tsc -p tsconfig.test.json"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vscode/test-electron": "^2.3.9",
+    "esbuild": "^0.20.0",
+    "eslint": "^9.0.0",
+    "mocha": "^10.3.0",
+    "typescript": "^5.3.3"
+  }
+}
