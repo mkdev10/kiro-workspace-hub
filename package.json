@@ -2,10 +2,14 @@
   "name": "kiro-workspace-hub",
   "displayName": "Kiro Workspace Hub",
   "description": "複数のKiroプロジェクトをサイドバーから横断的に切り替えられる拡張機能",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "kiro-workspace-hub",
   "engines": {
     "vscode": "^1.85.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mkdev10/kiro-workspace-hub"
   },
   "icon": "resources/icon.png",
   "categories": [
