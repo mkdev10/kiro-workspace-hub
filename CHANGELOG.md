@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0] - 2026-07-15
+
+### Added
+- Specs カウント表示（.kiro/specs/ 内のフィーチャー数）
+- Skills カウント表示（.kiro/skills/ 内のスキル数）
+- Agents カウント表示（.kiro/agents/ 内のカスタムエージェント数）
+- プロジェクトツールチップに .kiro 設定概要を表示（Hooks, Steering, MCP Servers, Specs, Skills, Agents）
+
+### Changed
+- Hooks カウントを改善: .json と .kiro.hook 両形式に対応
+- リフレッシュ・スキャン時に設定キャッシュをクリアして最新情報を反映
+
 ## [0.1.0] - 2026-06-19
 
 ### Added

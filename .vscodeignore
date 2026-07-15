@@ -10,3 +10,5 @@ esbuild.js
 aidlc-docs/**
 .kiro/**
 .mise.toml
+.env
+*.vsix
