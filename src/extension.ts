@@ -161,6 +161,7 @@ export async function activate(context: vscode.ExtensionContext) {
         }),
 
         vscode.commands.registerCommand('kiro-workspace-hub.refresh', () => {
+            projectManager.refreshConfigs();
             treeViewProvider.refresh();
         }),
 

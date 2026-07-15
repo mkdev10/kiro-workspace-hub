@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { Project, ProjectTreeItem, TreeNodeType } from './models/types';
 import { ProjectManager } from './projectManager';
-import { shortenPath, directoryExists } from './utils/pathUtils';
+import { shortenPath } from './utils/pathUtils';
 
 /**
  * サイドバーのツリービューUIを提供する
@@ -173,11 +172,12 @@ export class ProjectTreeViewProvider implements vscode.TreeDataProvider<ProjectT
         return nodes;
     }
 
-    private createProjectNodes(projects: Project[]): ProjectTreeItem[] {
+    private async createProjectNodes(projects: Project[]): Promise<ProjectTreeItem[]> {
         const currentPath = this.projectManager.getCurrentWorkspacePath();
         const sorted = [...projects].sort((a, b) => a.name.localeCompare(b.name));
 
-        return sorted.map((project) => {
+        const items: ProjectTreeItem[] = [];
+        for (const project of sorted) {
             const isCurrent = currentPath === project.path;
             const item = new ProjectTreeItem(
                 'project',
@@ -188,15 +188,26 @@ export class ProjectTreeViewProvider implements vscode.TreeDataProvider<ProjectT
 
             item.description = shortenPath(project.path);
 
-            // ツールチップ
-            const tooltipParts = [project.path];
+            // ツールチップ（Kiro設定情報を含む）
+            const config = await this.projectManager.getProjectConfig(project.id);
+            const tooltipLines = [project.path];
             if (project.description) {
-                tooltipParts.push(`\n${project.description}`);
+                tooltipLines.push(`\n${project.description}`);
             }
             if (project.tags.length > 0) {
-                tooltipParts.push(`\nタグ: ${project.tags.join(', ')}`);
+                tooltipLines.push(`\nタグ: ${project.tags.join(', ')}`);
             }
-            item.tooltip = tooltipParts.join('');
+            if (config) {
+                tooltipLines.push('');
+                tooltipLines.push('--- .kiro 設定 ---');
+                tooltipLines.push(`Hooks: ${config.hookCount}`);
+                tooltipLines.push(`Steering: ${config.steeringCount}`);
+                tooltipLines.push(`MCP Servers: ${config.mcpServerCount}`);
+                tooltipLines.push(`Specs: ${config.specCount}`);
+                tooltipLines.push(`Skills: ${config.skillCount}`);
+                tooltipLines.push(`Agents: ${config.agentCount}`);
+            }
+            item.tooltip = tooltipLines.join('\n');
 
             // アイコンとコンテキスト
             if (isCurrent) {
@@ -214,8 +225,10 @@ export class ProjectTreeViewProvider implements vscode.TreeDataProvider<ProjectT
                 arguments: [item],
             };
 
-            return item;
-        });
+            items.push(item);
+        }
+
+        return items;
     }
 
     private createWelcomeNode(): ProjectTreeItem {

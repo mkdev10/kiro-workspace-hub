@@ -25,6 +25,9 @@ export interface KiroConfig {
     hookCount: number;
     steeringCount: number;
     mcpServerCount: number;
+    specCount: number;
+    skillCount: number;
+    agentCount: number;
     lastReadAt: string;
 }
 

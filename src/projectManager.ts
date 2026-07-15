@@ -285,6 +285,9 @@ export class ProjectManager {
             );
         }
 
+        // スキャン時にKiro設定キャッシュをクリアして最新情報を反映
+        this.configReader.clearCache();
+
         return newProjects;
     }
 
@@ -302,6 +305,13 @@ export class ProjectManager {
         } catch {
             return undefined;
         }
+    }
+
+    /**
+     * Kiro設定キャッシュをクリアし、次回取得時に最新情報を反映する
+     */
+    refreshConfigs(): void {
+        this.configReader.clearCache();
     }
 
     /**
